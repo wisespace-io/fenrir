@@ -1,5 +1,5 @@
 use crate::client::*;
-use crate::wigle::wigle::*;
+use crate::wigle::api::*;
 
 static WIGLE_HOST: &str = "https://api.wigle.net/api/v2/";
 

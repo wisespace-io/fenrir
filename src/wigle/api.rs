@@ -9,8 +9,8 @@ pub struct Wigle {
 }
 
 impl Wigle {
-    pub fn geocode(&self) -> Result<NetworkGeocodingResponse> {
-        let data: String = self.client.get("network/geocode", "")?;
+    pub async fn geocode(&self) -> Result<NetworkGeocodingResponse> {
+        let data: String = self.client.get("network/geocode", "").await?;
         let geocode_response = from_str(data.as_str())?;
 
         Ok(geocode_response)
