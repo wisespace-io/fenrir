@@ -1,5 +1,6 @@
 use anyhow::Result;
 use crate::error::*;
+use std::collections::BTreeMap;
 
 #[derive(Clone)]
 pub struct Client {
@@ -22,7 +23,8 @@ impl Client {
         }
 
         let response: String = surf::get(url)
-            .set_header("authorization", self.api_token.as_str())
+            .set_header("Accept", "application/json")
+            .set_header("Authorization", format!("{} {}", "Basic", self.api_token.as_str()))
             .recv_string()
             .await
             .map_err(|err| FenrirError {
@@ -31,5 +33,16 @@ impl Client {
             })?;
 
         Ok(response)
+    }
+
+    pub fn build_request(&self, parameters: &BTreeMap<String, String>) -> String {
+        let mut request = String::new();
+        for (key, value) in parameters {
+            let param = format!("{}={}&", key, value);
+            request.push_str(param.as_ref());
+        }
+        request.pop(); // remove last &
+    
+        request
     }
 }
