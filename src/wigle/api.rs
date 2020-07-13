@@ -26,7 +26,7 @@ impl Wigle {
             NetworkGeocodingSuccess(success) => Ok(success),
             NetworkGeocodingError(error) => bail!(FenrirError {
                 code: 2001,
-                message: format!("{}", error.message),
+                message: error.message,
             }),
         }
     }
@@ -43,7 +43,7 @@ impl Wigle {
             WifiNetworkSuccess(success) => Ok(success),
             WifiNetworkError(error) => bail!(FenrirError {
                 code: 2002,
-                message: format!("{}", error.message),
+                message: error.message,
             }),
         }
     }
@@ -59,7 +59,7 @@ impl Wigle {
             WifiNetworkSuccess(success) => Ok(success),
             WifiNetworkError(error) => bail!(FenrirError {
                 code: 2003,
-                message: format!("{}", error.message),
+                message: error.message,
             }),
         }
     } 
