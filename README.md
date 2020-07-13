@@ -8,3 +8,28 @@ Locates wifi devices using services such as wigle.net
 [![Apache-2.0 licensed](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE-APACHE)
 
 [Documentation](https://docs.rs/crate/fenrir/)
+
+## Wigle.net api
+
+After creating an account on wigle.net, visit https://wigle.net/account to get your API Token.
+It correspondes to the "Encoded for use" field.
+
+```rust
+use async_std::task;
+use fenrir::api::*;
+use fenrir::wigle::api::*;
+
+fn main() -> Result<(), surf::Exception> {
+    let token = std::env::var("WIGLE_TOKEN").expect("You need to give your WIGLE_TOKEN as an environment variable");
+    task::block_on(async {
+        let wigle: Wigle = Fenrir::new(Some(token));
+        let geo_response = wigle.geocode("1600 Amphitheatre Parkway").await?;
+        dbg!(geo_response);
+
+        let search_response = wigle.search_bssid("00:00:00:00:00:00").await?;
+        dbg!(search_response);
+
+        Ok(())
+    })
+}
+
