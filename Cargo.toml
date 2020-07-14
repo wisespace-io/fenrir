@@ -1,6 +1,6 @@
 [package]
 name = "fenrir"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Flavio Oliveira <flavio@wisespace.io>"]
 edition = "2018"
 
