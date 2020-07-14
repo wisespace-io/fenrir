@@ -20,7 +20,7 @@ use fenrir::api::*;
 use fenrir::wigle::api::*;
 
 fn main() -> Result<(), surf::Exception> {
-    let token = std::env::var("WIGLE_TOKEN").expect("You need to give your WIGLE_TOKEN as an environment variable");
+    let token = std::env::var("WIGLE_TOKEN").expect("Provide your WIGLE_TOKEN as an environment variable");
     task::block_on(async {
         let wigle: Wigle = Fenrir::new(Some(token));
         let geo_response = wigle.geocode("1600 Amphitheatre Parkway").await?;
@@ -33,3 +33,21 @@ fn main() -> Result<(), surf::Exception> {
     })
 }
 
+## Mylnikov api
+
+It does not require an API token, it is completely free.
+
+```rust
+use async_std::task;
+use fenrir::api::*;
+use fenrir::mylnikov::api::*;
+
+fn main() -> Result<(), surf::Exception> {
+    task::block_on(async {
+        let mylnikov: Mylnikov = Fenrir::new(None);
+        let search_response = mylnikov.search_bssid("00:00:00:00:00:00").await?;
+        dbg!(search_response);
+
+        Ok(())
+    })
+}

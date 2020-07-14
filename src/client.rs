@@ -17,18 +17,26 @@ impl Client {
     }
 
     pub async fn get(&self, endpoint: &str, request: &str) -> Result<String> {
-        let mut url: String = format!("{}{}", self.host, endpoint);
-        if !request.is_empty() {
-            url.push_str(format!("?{}", request).as_str());
-        }
+        let response: String = surf::get(self.get_url(endpoint, request))
+            .set_header("Accept", "application/json")
+            .recv_string()
+            .await
+            .map_err(|err| FenrirError {
+                code: 1001,
+                message: format!("{}", err),
+            })?;
 
-        let response: String = surf::get(url)
+        Ok(response)
+    }
+    
+    pub async fn get_auth(&self, endpoint: &str, request: &str) -> Result<String> {
+        let response: String = surf::get(self.get_url(endpoint, request))
             .set_header("Accept", "application/json")
             .set_header("Authorization", format!("{} {}", "Basic", self.api_token.as_str()))
             .recv_string()
             .await
             .map_err(|err| FenrirError {
-                code: 1001,
+                code: 1002,
                 message: format!("{}", err),
             })?;
 
@@ -44,5 +52,13 @@ impl Client {
         request.pop(); // remove last &
     
         request
+    }
+
+    fn get_url(&self, endpoint: &str, request: &str) -> String {
+        let mut url: String = format!("{}{}", self.host, endpoint);
+        if !request.is_empty() {
+            url.push_str(format!("?{}", request).as_str());
+        }
+        url    
     }
 }

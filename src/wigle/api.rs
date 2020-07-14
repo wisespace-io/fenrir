@@ -19,7 +19,7 @@ impl Wigle {
         let mut parameters: BTreeMap<String, String> = BTreeMap::new();
         parameters.insert("addresscode".into(), address.into());
         let request = self.client.build_request(&parameters);
-        let data: String = self.client.get("network/geocode", &request).await?;
+        let data: String = self.client.get_auth("network/geocode", &request).await?;
         let geocode_response: NetworkGeocodingStatus = from_str(data.as_str())?;
 
         match geocode_response {
@@ -67,7 +67,7 @@ impl Wigle {
     pub async fn search(&self, parameters: BTreeMap<String, String>) -> Result<WifiNetworkStatus>
     {
         let request = self.client.build_request(&parameters);
-        let data: String = self.client.get("network/search", &request).await?;
+        let data: String = self.client.get_auth("network/search", &request).await?;
         let search_response = from_str(data.as_str())?;        
         Ok(search_response)
     }    
