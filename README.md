@@ -32,6 +32,7 @@ fn main() -> Result<(), surf::Exception> {
         Ok(())
     })
 }
+```
 
 ## Mylnikov api
 
@@ -51,3 +52,4 @@ fn main() -> Result<(), surf::Exception> {
         Ok(())
     })
 }
+```
